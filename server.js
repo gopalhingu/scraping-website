@@ -30,6 +30,16 @@ function buildFirecrawlLikeResponse({ url, html, title }) {
   };
 }
 
+function cleanHTML(html) {
+  return html
+    .replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi, "")
+    .replace(/<style[\s\S]*?>[\s\S]*?<\/style>/gi, "")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, 12000);
+}
+
 /**
  * Playwright scraper
  */
@@ -43,6 +53,7 @@ async function scrapePlaywright(url) {
 
   await browser.close();
 
+  return cleanHTML(html);
   // return buildFirecrawlLikeResponse({ url, html, title });
   return html;
 }
@@ -60,6 +71,7 @@ async function scrapePuppeteer(url) {
 
   await browser.close();
   
+  return cleanHTML(html);
   // return buildFirecrawlLikeResponse({ url, html, title });
   return html;
 }
