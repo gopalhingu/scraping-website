@@ -67,6 +67,19 @@ async function scrapePuppeteer(url) {
 /**
  * Routes
  */
+app.get('/api/scrape/ip', async (req, res) => {
+  try {
+    const response = await axios.get('https://api.ipify.org?format=json');
+    const { ip } = response.data;
+    // res.json({ ip });
+    // return;
+    const data = await axios.get(`https://ipapi.co/${ip}/json/`);;
+    res.json({ source: 'ip', data: data.data });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.post('/api/scrape/playwright', async (req, res) => {
   try {
     const { url } = req.body;
