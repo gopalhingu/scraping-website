@@ -43,7 +43,7 @@ async function scrapePlaywright(url) {
 
   await browser.close();
 
-  return buildFirecrawlLikeResponse({ url, html, title });
+  // return buildFirecrawlLikeResponse({ url, html, title });
   return html;
 }
 
@@ -60,7 +60,7 @@ async function scrapePuppeteer(url) {
 
   await browser.close();
   
-  return buildFirecrawlLikeResponse({ url, html, title });
+  // return buildFirecrawlLikeResponse({ url, html, title });
   return html;
 }
 
