@@ -44,10 +44,22 @@ function cleanHTML(html) {
  * Playwright scraper
  */
 async function scrapePlaywright(url) {
-  const browser = await chromium.launch({ headless: true });
+  const browser = await chromium.launch({
+    headless: true,
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-dev-shm-usage',
+      '--disable-gpu',
+      '--single-process'
+    ]
+  });
   const page = await browser.newPage();
 
-  await page.goto(url, { waitUntil: 'networkidle' });
+  await page.goto(url, {
+    waitUntil: 'domcontentloaded',
+    timeout: 60000
+  });
   const html = await page.content();
   const title = await page.title();
 
@@ -63,7 +75,6 @@ async function scrapePlaywright(url) {
  */
 async function scrapePuppeteer(url) {
   const browser = await puppeteer.launch({ 
-    // headless: true,
     headless: "new",
     args: [
       "--no-sandbox",
@@ -75,7 +86,9 @@ async function scrapePuppeteer(url) {
   });
   const page = await browser.newPage();
 
-  await page.goto(url, { waitUntil: 'networkidle2' });
+  await page.goto(url, {
+    waitUntil: 'networkidle2'
+  });
   const html = await page.content();
   const title = await page.title();
 
